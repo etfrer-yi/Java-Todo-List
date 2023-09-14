@@ -21,6 +21,7 @@ public class Todo {
 
     public Todo(String title) {
         this.title = title;
+        this.completed = false;
     }
 
     public Todo() {}
@@ -39,6 +40,10 @@ public class Todo {
 
     public void setCompleted(boolean status) {
         this.completed = status;
+    }
+
+    public Long getId() {
+        return this.id;
     }
 
 }

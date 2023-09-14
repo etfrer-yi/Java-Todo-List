@@ -4,56 +4,40 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @Controller
 @RequestMapping("/todos")
 public class TodoController {
 
-    private final TodoRepository todoRepository;
+    private final TodoService todoService;
 
     @Autowired
-    public TodoController(TodoRepository todoRepository) {
-        this.todoRepository = todoRepository;
+    public TodoController(TodoService todoService) {
+        this.todoService = todoService;
     }
 
     @GetMapping
     public String listTodos(Model model) {
-        List<Todo> todos = todoRepository.findAll();
-        model.addAttribute("todos", todos);
-        return "todo/list";
+        return this.todoService.listTodos(model);
     }
 
     @PostMapping("/add")
     public String addTodo(@RequestParam String title) {
-        Todo todo = new Todo(title);
-        todoRepository.save(todo);
-        return "redirect:/todos";
+        return this.todoService.addTodo(title);
     }
 
     @PutMapping("/put/{id}")
-    public String updateTodo(@PathVariable Long id, String newTitle) {
-        Todo todo = todoRepository.findById(id).orElse(null);
-        if (todo != null) {
-            todo.setTitle(newTitle);
-            todoRepository.save(todo);
-        }
-        return "redirect:/todos";
+    public String updateTodo(@PathVariable("id") Long id, String newTitle) {
+        return this.todoService.updateTodo(id, newTitle);
     }
 
     @DeleteMapping("/delete/{id}")
-    public String deleteTodo(@PathVariable Long id) {
-        todoRepository.deleteById(id);
-        return "redirect:/todos";
+    public String deleteTodo(@PathVariable("id") Long id) {
+        return this.todoService.deleteTodo(id);
     }
 
-    @PutMapping("/complete/{id}")
-    public String reverseComplete(@PathVariable Long id) {
-        Todo todo = todoRepository.findById(id).orElse(null);
-        if (todo != null) {
-            todo.setCompleted(!todo.getCompleted());
-            todoRepository.save(todo);
-        }
-        return "redirect:/todos";
+    @PutMapping("/status/{id}")
+    public String reverseComplete(@PathVariable("id") Long id) {
+        return this.todoService.reverseComplete(id);
     }
 }

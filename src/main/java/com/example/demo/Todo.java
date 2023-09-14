@@ -14,6 +14,17 @@ public class Todo {
     private String title;
     private boolean completed;
 
+    public Todo(String title, boolean completed) {
+        this.title = title;
+        this.completed = completed;
+    }
+
+    public Todo(String title) {
+        this.title = title;
+    }
+
+    public Todo() {}
+
     public String getTitle() {
         return this.title;
     }
@@ -30,7 +41,4 @@ public class Todo {
         this.completed = status;
     }
 
-    // Constructors
-
-    // Other methods if needed
 }

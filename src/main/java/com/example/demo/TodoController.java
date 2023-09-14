@@ -26,17 +26,32 @@ public class TodoController {
 
     @PostMapping("/add")
     public String addTodo(@RequestParam String title) {
-        Todo todo = new Todo();
-        todo.setTitle(title);
+        Todo todo = new Todo(title);
         todoRepository.save(todo);
         return "redirect:/todos";
     }
 
-    @GetMapping("/complete/{id}")
-    public String completeTodo(@PathVariable Long id) {
+    @PutMapping("/put/{id}")
+    public String updateTodo(@PathVariable Long id, String newTitle) {
         Todo todo = todoRepository.findById(id).orElse(null);
         if (todo != null) {
-            todo.setCompleted(true);
+            todo.setTitle(newTitle);
+            todoRepository.save(todo);
+        }
+        return "redirect:/todos";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteTodo(@PathVariable Long id) {
+        todoRepository.deleteById(id);
+        return "redirect:/todos";
+    }
+
+    @PutMapping("/complete/{id}")
+    public String reverseComplete(@PathVariable Long id) {
+        Todo todo = todoRepository.findById(id).orElse(null);
+        if (todo != null) {
+            todo.setCompleted(!todo.getCompleted());
             todoRepository.save(todo);
         }
         return "redirect:/todos";

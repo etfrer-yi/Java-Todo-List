@@ -11,15 +11,13 @@
     <input type="text" name="title" required/>
     <button type="submit">Add Todo</button>
 </form>
-
+<!--th:href="@{/todos/delete/{id}(id=${todo.id})}"-->
 <p>To do:</p>
 <ul>
     <li th:each="todo : ${todos}" th:if="${not todo.completed}">
         <span th:text="${todo.title}"></span>
-<!--        <a th:href="/todos/status/${todo.id}"><button>Set completed</button></a>-->
-        <a th:href="@{/todos/delete/{id}(id=${todo.id})}"><button>Delete</button></a>
-<!--        <button type="submit" onclick="location.href=@{/todos/status/{id}}">Set completed</button>-->
-<!--        <a th:if="${!todo.completed}" th:href="@{/todos/complete/{id}(id=${todo.id})}">Complete</a>-->
+        <button th:attr="onclick=|deleteItem('@{/todos/delete/{id}(id=${todo.id})}')|" >Delete</button>
+        <button th:attr="onclick=|toggleComplete('@{/todos/status/{id}(id=${todo.id})}')|">Set complete</button>
     </li>
 </ul>
 
@@ -27,11 +25,29 @@
 <ul>
     <li th:each="todo : ${todos}" th:if="${todo.completed}">
         <span th:text="${todo.title}"></span>
-<!--        <a th:href="/todos/status/${todo.id}"><button>Set incomplete</button></a>-->
-<!--        <a th:href="/todos/delete/${todo.id}"><button>Delete</button></a>-->
-<!--        <button type="submit" onclick="location.href=@{/todos/status/{id}}">Set incomplete</button>-->
-        <!--        <a th:if="${!todo.completed}" th:href="@{/todos/complete/{id}(id=${todo.id})}">Complete</a>-->
+        <button th:attr="onclick=|deleteItem('@{/todos/delete/{id}(id=${todo.id})}')|" >Delete</button>
+        <button th:attr="onclick=|toggleComplete('@{/todos/status/{id}(id=${todo.id})}')|">Set incomplete</button>
     </li>
 </ul>
+<script>
+    async function deleteItem(path) {
+        await fetch(path, {
+            method: 'DELETE',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        });
+        location.reload();
+    }
+    async function toggleComplete(path) {
+        await fetch(path, {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json'
+            }
+        });
+        location.reload();
+    }
+</script>
 </body>
 </html>

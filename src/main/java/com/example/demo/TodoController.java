@@ -18,17 +18,17 @@ public class TodoController {
 
     @GetMapping
     public String listTodos(Model model) {
-        return this.todoService.listTodos(model);
+        return todoService.listTodos(model);
     }
 
     @PostMapping("/add")
     public String addTodo(@RequestParam String title) {
-        return this.todoService.addTodo(title);
+        return todoService.addTodo(title);
     }
 
     @PutMapping("/put/{id}")
     public String updateTodo(@PathVariable("id") Long id, String newTitle) {
-        return this.todoService.updateTodo(id, newTitle);
+        return todoService.updateTodo(id, newTitle);
     }
 
     @DeleteMapping("/delete/{id}")

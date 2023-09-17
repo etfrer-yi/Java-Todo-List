@@ -18,6 +18,8 @@
         <span th:text="${todo.title}"></span>
         <button th:attr="onclick=|deleteItem('@{/todos/delete/{id}(id=${todo.id})}')|" >Delete</button>
         <button th:attr="onclick=|toggleComplete('@{/todos/status/{id}(id=${todo.id})}')|">Set complete</button>
+        <input type="text" th:id="${todo.id}" name="incomplete_todo" required/>
+        <button th:attr="onclick=|modify('@{/todos/modify/{id}(id=${todo.id})}')|">Modify todo</button>
     </li>
 </ul>
 
@@ -27,6 +29,8 @@
         <span th:text="${todo.title}"></span>
         <button th:attr="onclick=|deleteItem('@{/todos/delete/{id}(id=${todo.id})}')|" >Delete</button>
         <button th:attr="onclick=|toggleComplete('@{/todos/status/{id}(id=${todo.id})}')|">Set incomplete</button>
+        <input type="text" th:id="${todo.id}" name="complete_todo" required/>
+        <button th:attr="onclick=|modify('@{/todos/modify/{id}(id=${todo.id})}')|">Modify todo</button>
     </li>
 </ul>
 <script>
@@ -44,6 +48,19 @@
             method: 'PUT',
             headers: {
                 'Content-type': 'application/json'
+            }
+        });
+        location.reload();
+    }
+
+    async function modify(path) {
+        const splitPath = path.split("/")
+        const id = splitPath[splitPath.length - 1];
+        const data = document.getElementById(id).value;
+        await fetch(path + "?newTitle=" + data, {
+            method: 'PUT',
+            headers: {
+                'Content-type': 'application/json',
             }
         });
         location.reload();

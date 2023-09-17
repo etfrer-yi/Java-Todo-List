@@ -26,8 +26,8 @@ public class TodoController {
         return todoService.addTodo(title);
     }
 
-    @PutMapping("/put/{id}")
-    public String updateTodo(@PathVariable("id") Long id, String newTitle) {
+    @PutMapping(value = "/modify/{id}")
+    public String updateTodo(@PathVariable("id") Long id, @RequestParam String newTitle) {
         return todoService.updateTodo(id, newTitle);
     }
 
